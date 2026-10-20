@@ -1,9 +1,12 @@
 
 from flask import Flask, render_template, request
 from datetime import datetime
+import os
 
 app = Flask(__name__)
+
 history = []
+
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -18,14 +21,18 @@ def home():
 
             if operation == "add":
                 result = a + b
+
             elif operation == "subtract":
                 result = a - b
+
             elif operation == "multiply":
                 result = a * b
+
             elif operation == "divide":
                 if b == 0:
                     raise ValueError("Cannot divide by zero.")
                 result = a / b
+
             else:
                 raise ValueError("Invalid operation.")
 
@@ -36,6 +43,7 @@ def home():
                 "result": result,
                 "time": datetime.now().strftime("%H:%M:%S")
             })
+
             del history[10:]
 
         except (ValueError, TypeError) as e:
@@ -48,5 +56,11 @@ def home():
         history=history
     )
 
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False
+    )
