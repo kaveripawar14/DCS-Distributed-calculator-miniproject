@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributed Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 35px 15px;
+            color: #243047;
+        }
+        .container {
+            max-width: 620px;
+            margin: auto;
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px #00000012;
+        }
+        h1, h2 { text-align: center; }
+        .subtitle { text-align: center; color: #68758a; }
+        label { display: block; margin-top: 15px; }
+        input, select, button {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #ccd4df;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 20px;
+            background: #2459c4;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover { background: #173f91; }
+        .result, .error {
+            padding: 14px;
+            margin-top: 18px;
+            border-radius: 7px;
+            text-align: center;
+        }
+        .result { background: #e7f7ed; color: #176536; }
+        .error { background: #fff0f0; color: #a12626; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 9px 5px; border-bottom: 1px solid #ddd; text-align: center; }
+        .footer { text-align: center; font-size: 13px; color: #68758a; margin-top: 25px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Distributed Calculator</h1>
+    <p class="subtitle">Client-Server Web Service | DCS Mini Project</p>
+
+    <form method="POST">
+        <label>First Number</label>
+        <input type="number" name="num1" step="any" required>
+
+        <label>Operation</label>
+        <select name="operation" required>
+            <option value="add">Addition (+)</option>
+            <option value="subtract">Subtraction (-)</option>
+            <option value="multiply">Multiplication (×)</option>
+            <option value="divide">Division (÷)</option>
+        </select>
+
+        <label>Second Number</label>
+        <input type="number" name="num2" step="any" required>
+
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if result is not none %}
+    <div class="result">
+        <strong>Result: {{ result }}</strong>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <h2>Recent Calculations</h2>
+    {% if history %}
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Calculation</th>
+            <th>Result</th>
+        </tr>
+        {% for item in history %}
+        <tr>
+            <td>{{ item.time }}</td>
+            <td>{{ item.num1 }} {{ {'add': '+', 'subtract': '-', 'multiply': '×', 'divide': '÷'}[item.operation] }} {{ item.num2 }}</td>
+            <td>{{ item.result }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p class="subtitle">No calculations yet.</p>
+    {% endif %}
+
+    <p class="footer">Developed for Distributed Computing Systems</p>
+</div>
+</body>
+</html>
